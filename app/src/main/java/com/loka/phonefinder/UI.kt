@@ -2,12 +2,12 @@
 
 package com.loka.phonefinder
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,12 +58,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.LocaleListCompat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -185,7 +185,7 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (screen != "home") {
-                    TextButton(onClick = { screen = "home" }) {
+                    TextButton(onClick = { screen = "home" }, modifier = Modifier.testTag("back")) {
                         Text(if (isAr) "→" else "←", fontSize = 20.sp, color = Accent)
                     }
                 }
@@ -231,7 +231,7 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
                     isAr = isAr, saveHistory = saveHistory, online = online,
                     onLang = { l ->
                         prefs.edit().putString("lang", l).apply()
-                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(l))
+                        (ctx as? Activity)?.recreate()
                     },
                     onSaveHistory = {
                         saveHistory = it
@@ -295,7 +295,7 @@ fun HomeScreen(
             value = input, onValueChange = onInput,
             label = { Text(tr("رقم الهاتف", "Phone number")) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            singleLine = true, modifier = Modifier.fillMaxWidth()
+            singleLine = true, modifier = Modifier.fillMaxWidth().testTag("input")
         )
         if (invalid) {
             Text(
@@ -303,7 +303,7 @@ fun HomeScreen(
                     "الرقم غير صالح للدولة المختارة. تأكد من الرقم أو غيّر الدولة.",
                     "This number is not valid for the selected country. Check the number or change the country."
                 ),
-                color = ErrRed, fontSize = 13.sp
+                color = ErrRed, fontSize = 13.sp, modifier = Modifier.testTag("invalid")
             )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -312,22 +312,22 @@ fun HomeScreen(
             }
             OutlinedButton(onClick = { onInput("") }) { Text(tr("مسح", "Clear")) }
         }
-        Button(onClick = { onSearch("quick") }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { onSearch("quick") }, modifier = Modifier.fillMaxWidth().testTag("btn_quick")) {
             Text(tr("بحث سريع", "Quick Search"))
         }
         Button(
-            onClick = { onSearch("deep") }, modifier = Modifier.fillMaxWidth(),
+            onClick = { onSearch("deep") }, modifier = Modifier.fillMaxWidth().testTag("btn_deep"),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A3A3A), contentColor = Accent)
         ) { Text(tr("بحث عميق", "Deep Search")) }
         Button(
-            onClick = { onSearch("engines") }, modifier = Modifier.fillMaxWidth(),
+            onClick = { onSearch("engines") }, modifier = Modifier.fillMaxWidth().testTag("btn_engines"),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A3A3A), contentColor = Accent)
         ) { Text(tr("كل محركات البحث", "Search All Engines")) }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            TextButton(onClick = { onNav("history") }) { Text(tr("السجل", "History")) }
-            TextButton(onClick = { onNav("providers") }) { Text(tr("المصادر", "Providers")) }
-            TextButton(onClick = { onNav("settings") }) { Text(tr("الإعدادات", "Settings")) }
+            TextButton(onClick = { onNav("history") }, modifier = Modifier.testTag("nav_history")) { Text(tr("السجل", "History")) }
+            TextButton(onClick = { onNav("providers") }, modifier = Modifier.testTag("nav_providers")) { Text(tr("المصادر", "Providers")) }
+            TextButton(onClick = { onNav("settings") }, modifier = Modifier.testTag("nav_settings")) { Text(tr("الإعدادات", "Settings")) }
         }
     }
 }
@@ -354,7 +354,7 @@ fun ProviderCard(p: Provider, url: String, st: CardState, onOpen: () -> Unit) {
     val dead = p.status == "dead"
     val shown = if (dead) CardStatus.UNAVAILABLE else st.status
     Card(
-        Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("card_" + p.id),
         colors = CardDefaults.cardColors(containerColor = Surf)
     ) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -409,7 +409,7 @@ fun ProviderCard(p: Provider, url: String, st: CardState, onOpen: () -> Unit) {
 @Composable
 fun LocalCard(n: Normalized, ms: Long) {
     Card(
-        Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("localcard"),
         colors = CardDefaults.cardColors(containerColor = Surf)
     ) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -447,10 +447,10 @@ fun ResultsScreen(
     val clip = LocalClipboardManager.current
     val providers = reg.providers.filter { it.id !in disabled && mode in it.modes }
     val queries = if (mode == "quick") n.queries.take(3) else n.queries
-    LazyColumn(Modifier.fillMaxSize().padding(horizontal = 12.dp)) {
+    LazyColumn(Modifier.fillMaxSize().padding(horizontal = 12.dp).testTag("results_list")) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(n.intl, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text(n.intl, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.testTag("intl"))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     OutlinedButton(onClick = { clip.setText(AnnotatedString(n.e164)) }) {
                         Text(tr("نسخ الرقم", "Copy number"))
@@ -513,17 +513,17 @@ fun HistoryScreen(
     Column(Modifier.fillMaxSize().padding(12.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(tr("سجل البحث", "Search history"), fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-            TextButton(onClick = onClear, enabled = history.isNotEmpty()) {
+            TextButton(onClick = onClear, enabled = history.isNotEmpty(), modifier = Modifier.testTag("history_clear")) {
                 Text(tr("مسح الكل", "Delete all"), color = ErrRed)
             }
         }
         if (history.isEmpty()) {
-            Text(tr("لا يوجد سجل.", "No history."), color = Muted)
+            Text(tr("لا يوجد سجل.", "No history."), color = Muted, modifier = Modifier.testTag("history_empty"))
         }
         LazyColumn {
             items(history, key = { it.id }) { e ->
                 Row(
-                    Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("history_row"),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = { onPick(e) }, modifier = Modifier.weight(1f)) {
@@ -554,7 +554,7 @@ fun ProvidersScreen(
                 Text(
                     tr("مصدر القائمة: ", "Registry source: ") + reg.source + "  |  v" + reg.version +
                         "  |  " + reg.updated + "  |  " + reg.providers.size,
-                    fontSize = 12.sp, color = Muted
+                    fontSize = 12.sp, color = Muted, modifier = Modifier.testTag("registry_info")
                 )
                 Text(
                     tr(
