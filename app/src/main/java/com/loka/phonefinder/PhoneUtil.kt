@@ -67,6 +67,7 @@ object PhoneUtil {
         variants.add(intl)
         variants.add(intl.replace(" ", "-"))
         variants.add(nationalFmt)
+        variants.add(nationalFmt.replace(" ", "-"))
         variants.add("(+$cc) $nsn")
         variants.add("\"$e164\"")
         variants.add("\"$natDigits\"")
