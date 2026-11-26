@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-27",
+  "updated": "2026-11-26",
   "providers": [
     {
       "id": "google",
@@ -18,8 +18,8 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -38,8 +38,8 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -58,8 +58,8 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -76,9 +76,9 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
-      "failCount": 0
+      "lastChecked": "2026-11-26",
+      "lastResult": "fail 500",
+      "failCount": 1
     },
     {
       "id": "yandex",
@@ -94,8 +94,8 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -112,8 +112,8 @@
         "engines"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "restricted 429",
       "failCount": 0
     },
     {
@@ -131,8 +131,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -150,8 +150,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "restricted 403",
       "failCount": 0
     },
     {
@@ -168,8 +168,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -187,8 +187,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -205,8 +205,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -223,8 +223,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "restricted 403",
       "failCount": 0
     },
     {
@@ -241,8 +241,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -260,8 +260,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -278,8 +278,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -296,8 +296,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -314,8 +314,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -332,8 +332,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -350,8 +350,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -368,8 +368,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -386,8 +386,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -404,9 +404,9 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
-      "failCount": 0
+      "lastChecked": "2026-11-26",
+      "lastResult": "fail URLError",
+      "failCount": 1
     },
     {
       "id": "cellnumber_eg",
@@ -422,8 +422,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "restricted 403",
       "failCount": 0
     },
     {
@@ -440,8 +440,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -458,8 +458,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -476,8 +476,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -495,8 +495,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -514,8 +514,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -532,9 +532,9 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
-      "failCount": 0
+      "lastChecked": "2026-11-26",
+      "lastResult": "fail 404",
+      "failCount": 1
     },
     {
       "id": "instagram",
@@ -550,8 +550,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -568,8 +568,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     },
     {
@@ -586,8 +586,8 @@
         "deep"
       ],
       "status": "active",
-      "lastChecked": "",
-      "lastResult": "",
+      "lastChecked": "2026-11-26",
+      "lastResult": "ok 200",
       "failCount": 0
     }
   ]
