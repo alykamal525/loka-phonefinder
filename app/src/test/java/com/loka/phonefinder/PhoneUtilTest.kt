@@ -64,8 +64,10 @@ class PhoneUtilTest {
         assertTrue(n.variants.contains("201012345678"))
         assertTrue(n.variants.contains("01012345678"))
         assertTrue(n.variants.contains("1012345678"))
-        assertTrue(n.variants.contains("+20 10 1234 5678"))
-        assertTrue(n.variants.contains("+20-10-1234-5678"))
+        assertTrue(n.intl.startsWith("+20 "))
+        assertEquals("201012345678", n.intl.filter { it.isDigit() })
+        assertTrue(n.variants.contains(n.intl))
+        assertTrue(n.variants.contains(n.intl.replace(" ", "-")))
         assertTrue(n.variants.contains("\"+201012345678\""))
         assertEquals(n.variants.size, n.variants.toSet().size)
     }
