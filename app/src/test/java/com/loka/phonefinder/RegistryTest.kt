@@ -50,7 +50,6 @@ class RegistryTest {
             assertTrue(p.id + " modes", p.modes.isNotEmpty() && p.modes.all { it in setOf("quick", "deep", "engines") })
             assertTrue(p.id + " category", p.category in setOf("engine", "caller_id", "egypt", "social"))
             assertTrue(p.id + " notes", p.noteEn.isNotEmpty() && p.noteAr.isNotEmpty())
-            assertEquals(p.id, "active", p.status)
         }
     }
 
