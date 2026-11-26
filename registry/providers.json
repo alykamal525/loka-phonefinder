@@ -1,0 +1,594 @@
+{
+  "version": 1,
+  "updated": "2026-11-27",
+  "providers": [
+    {
+      "id": "google",
+      "name": "Google",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://www.google.com/search?q={query}",
+      "homepage": "https://www.google.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep",
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "bing",
+      "name": "Bing",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://www.bing.com/search?q={query}",
+      "homepage": "https://www.bing.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep",
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "duckduckgo",
+      "name": "DuckDuckGo",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://duckduckgo.com/?q={query}",
+      "homepage": "https://duckduckgo.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep",
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "yahoo",
+      "name": "Yahoo",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://search.yahoo.com/search?p={query}",
+      "homepage": "https://search.yahoo.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "yandex",
+      "name": "Yandex",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://yandex.com/search/?text={query}",
+      "homepage": "https://yandex.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "brave",
+      "name": "Brave Search",
+      "category": "engine",
+      "type": "search_engine",
+      "url": "https://search.brave.com/search?q={query}",
+      "homepage": "https://search.brave.com/",
+      "note_en": "Opens the results page in your browser. The app does not retrieve these results itself.",
+      "note_ar": "يفتح صفحة النتائج في المتصفح. التطبيق لا يجلب هذه النتائج بنفسه.",
+      "egypt": "unverified",
+      "modes": [
+        "engines"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "truecaller",
+      "name": "Truecaller",
+      "category": "caller_id",
+      "type": "website_lookup",
+      "url": "https://www.truecaller.com/search/{region_lc}/{nsn}",
+      "homepage": "https://www.truecaller.com/",
+      "note_en": "Opens the Truecaller web search page for this number. Truecaller may require sign-in to show a name; the app reads nothing.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "tellows",
+      "name": "tellows",
+      "category": "caller_id",
+      "type": "website_lookup",
+      "url": "https://www.tellows.com/num/{e164}",
+      "homepage": "https://www.tellows.com/",
+      "note_en": "Opens the tellows page for this number (community score and comments). The page loaded for an Egyptian test number; the app reads nothing.",
+      "note_ar": "يفتح صفحة tellows لهذا الرقم (تقييم وتعليقات المجتمع). الصفحة تعمل مع رقم مصري تجريبي، والتطبيق لا يقرأ أي نتيجة.",
+      "egypt": "verified_page_loads",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "tellows_eg",
+      "name": "tellows Egypt",
+      "category": "egypt",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://eg.tellows.net/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "egypt_focused_site",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "syncme",
+      "name": "Sync.ME",
+      "category": "caller_id",
+      "type": "website_lookup",
+      "url": "https://sync.me/search/?number={e164digits}",
+      "homepage": "https://sync.me/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "unknownphone",
+      "name": "UnknownPhone",
+      "category": "caller_id",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://www.unknownphone.com/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "whocallsme",
+      "name": "WhoCallsMe",
+      "category": "caller_id",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://whocallsme.com/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "hiya",
+      "name": "Hiya",
+      "category": "caller_id",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://www.hiya.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "getcontact",
+      "name": "Getcontact",
+      "category": "caller_id",
+      "type": "app_based",
+      "url": "",
+      "homepage": "https://www.getcontact.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "callapp",
+      "name": "CallApp",
+      "category": "caller_id",
+      "type": "app_based",
+      "url": "",
+      "homepage": "https://callapp.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "eyecon",
+      "name": "Eyecon",
+      "category": "caller_id",
+      "type": "app_based",
+      "url": "",
+      "homepage": "https://www.eyecon-app.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "whoscall",
+      "name": "Whoscall",
+      "category": "caller_id",
+      "type": "app_based",
+      "url": "",
+      "homepage": "https://whoscall.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "numbuster",
+      "name": "NumBuster",
+      "category": "caller_id",
+      "type": "app_based",
+      "url": "",
+      "homepage": "https://numbuster.com/",
+      "note_en": "App-based service with no verified public web lookup. Opens its website; install its own app to use it.",
+      "note_ar": "خدمة تعتمد على تطبيقها ولا يوجد بحث ويب عام تم التحقق منه. يفتح الموقع، ثبّت تطبيقها لاستخدامها.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "shouldianswer",
+      "name": "Should I Answer?",
+      "category": "caller_id",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://www.shouldianswer.com/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "callersmart",
+      "name": "CallerSmart",
+      "category": "caller_id",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://www.callersmart.com/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "unverified (US focused)",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "nocall",
+      "name": "NoCall (Egypt)",
+      "category": "egypt",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://nocall.io/eg",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "egypt_focused_site",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "amanak",
+      "name": "Amanak (أمانك)",
+      "category": "egypt",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://amanak.app/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "egypt_focused_site",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "cellnumber_eg",
+      "name": "CellNumber.info Egypt",
+      "category": "egypt",
+      "type": "homepage_only",
+      "url": "",
+      "homepage": "https://egy.cellnumber.info/",
+      "note_en": "Opens the service website in your browser. No public lookup API was verified, so no result is read by the app. The site may ask you to sign in.",
+      "note_ar": "يفتح موقع الخدمة في المتصفح. لم نتحقق من وجود واجهة بحث عامة، لذلك التطبيق لا يقرأ أي نتيجة. قد يطلب الموقع تسجيل الدخول.",
+      "egypt": "egypt_focused_site",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "yellowpages_eg",
+      "name": "Yellow Pages Egypt",
+      "category": "egypt",
+      "type": "directory_site_search",
+      "url": "https://www.google.com/search?q=site%3Ayellowpages.com.eg+{query}",
+      "homepage": "https://yellowpages.com.eg/",
+      "note_en": "Opens a web search limited to this site. It only shows what the search engine has indexed.",
+      "note_ar": "يفتح بحثًا في محرك البحث محدودًا بهذا الموقع. يعرض فقط ما فهرسه محرك البحث.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "findinegypt",
+      "name": "FindInEgypt",
+      "category": "egypt",
+      "type": "directory_site_search",
+      "url": "https://www.google.com/search?q=site%3Afindinegypt.com+{query}",
+      "homepage": "https://www.findinegypt.com/",
+      "note_en": "Opens a web search limited to this site. It only shows what the search engine has indexed.",
+      "note_ar": "يفتح بحثًا في محرك البحث محدودًا بهذا الموقع. يعرض فقط ما فهرسه محرك البحث.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "dalilimex",
+      "name": "Dalil IMEX",
+      "category": "egypt",
+      "type": "directory_site_search",
+      "url": "https://www.google.com/search?q=site%3Adalilimex.com+{query}",
+      "homepage": "https://dalilimex.com/en/",
+      "note_en": "Opens a web search limited to this site. It only shows what the search engine has indexed.",
+      "note_ar": "يفتح بحثًا في محرك البحث محدودًا بهذا الموقع. يعرض فقط ما فهرسه محرك البحث.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp",
+      "category": "social",
+      "type": "deep_link",
+      "url": "https://wa.me/{e164digits}",
+      "homepage": "https://www.whatsapp.com/",
+      "note_en": "Opens a WhatsApp chat window for this number (wa.me link). This does not confirm the number is registered and shows no profile data.",
+      "note_ar": "يفتح محادثة واتساب لهذا الرقم (رابط wa.me). لا يؤكد أن الرقم مسجل ولا يعرض بيانات الحساب.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "category": "social",
+      "type": "deep_link",
+      "url": "https://t.me/+{e164digits}",
+      "homepage": "https://telegram.org/",
+      "note_en": "Opens the Telegram link for this number. It opens only if the number is a Telegram contact visible to you; nothing is confirmed by the app.",
+      "note_ar": "يفتح رابط تيليجرام لهذا الرقم. لا يعمل إلا إن كان الرقم ظاهرًا لك في تيليجرام، والتطبيق لا يؤكد شيئًا.",
+      "egypt": "unverified",
+      "modes": [
+        "quick",
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "category": "social",
+      "type": "website_lookup",
+      "url": "https://www.facebook.com/search/top?q={e164}",
+      "homepage": "https://www.facebook.com/",
+      "note_en": "Opens Facebook search. Facebook usually requires sign-in and hides private profiles; the app reads nothing.",
+      "note_ar": "يفتح بحث فيسبوك. غالبًا يتطلب تسجيل الدخول ويخفي الحسابات الخاصة، والتطبيق لا يقرأ أي نتيجة.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "category": "social",
+      "type": "site_search",
+      "url": "https://www.google.com/search?q=site%3Ainstagram.com+{query}",
+      "homepage": "https://instagram.com/",
+      "note_en": "Opens a search restricted to this platform through a web search engine. It does not confirm that the number belongs to an account.",
+      "note_ar": "يفتح بحثًا مقيدًا بهذه المنصة عبر محرك بحث. لا يؤكد أن الرقم مرتبط بحساب.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "category": "social",
+      "type": "site_search",
+      "url": "https://www.google.com/search?q=site%3Alinkedin.com+{query}",
+      "homepage": "https://linkedin.com/",
+      "note_en": "Opens a search restricted to this platform through a web search engine. It does not confirm that the number belongs to an account.",
+      "note_ar": "يفتح بحثًا مقيدًا بهذه المنصة عبر محرك بحث. لا يؤكد أن الرقم مرتبط بحساب.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    },
+    {
+      "id": "x_twitter",
+      "name": "X (Twitter)",
+      "category": "social",
+      "type": "site_search",
+      "url": "https://www.google.com/search?q=site%3Ax.com+{query}",
+      "homepage": "https://x.com/",
+      "note_en": "Opens a search restricted to this platform through a web search engine. It does not confirm that the number belongs to an account.",
+      "note_ar": "يفتح بحثًا مقيدًا بهذه المنصة عبر محرك بحث. لا يؤكد أن الرقم مرتبط بحساب.",
+      "egypt": "unverified",
+      "modes": [
+        "deep"
+      ],
+      "status": "active",
+      "lastChecked": "",
+      "lastResult": "",
+      "failCount": 0
+    }
+  ]
+}
