@@ -138,6 +138,7 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
     val history by vm.history.collectAsState()
     val refreshing by vm.refreshing.collectAsState()
     val refreshFailed by vm.refreshFailed.collectAsState()
+    val names by vm.names.collectAsState()
     val isAr = LocalConfiguration.current.locales[0].language == "ar"
 
     LaunchedEffect(Unit) { if (online) vm.refreshRegistry() }
@@ -157,6 +158,7 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
         norm = n
         states.clear()
         screen = "results"
+        vm.searchNames(n, prefs.getString("api_provider", "serper") ?: "serper")
         if (saveHistory) {
             vm.add(
                 HistoryEntry(
@@ -170,12 +172,15 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
     fun openProvider(p: Provider) {
         val n = norm ?: return
         val template = if (p.url.isNotEmpty()) p.url else p.homepage
-        val url = PhoneUtil.fillUrl(template, n)
-        val ok = openUrl(ctx, url)
+        val ok = openUrl(ctx, PhoneUtil.fillUrl(template, n))
         states[p.id] = CardState(
             if (ok) CardStatus.EXTERNAL else CardStatus.UNAVAILABLE,
             System.currentTimeMillis(), -1L
         )
+    }
+
+    fun openQuery(engine: String, q: String) {
+        openUrl(ctx, PhoneUtil.searchUrl(engine, q))
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = Bg) {
@@ -185,7 +190,10 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (screen != "home") {
-                    TextButton(onClick = { screen = "home" }, modifier = Modifier.testTag("back")) {
+                    TextButton(
+                        onClick = { screen = "home" },
+                        modifier = Modifier.testTag("back")
+                    ) {
                         Text(if (isAr) "→" else "←", fontSize = 20.sp, color = Accent)
                     }
                 }
@@ -207,8 +215,11 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
                         ResultsScreen(
                             n = n, mode = mode, localMs = localMs, reg = reg,
                             disabled = disabled, states = states,
+                            names = names,
                             onMode = { mode = it },
-                            onOpen = { openProvider(it) }
+                            onOpen = { openProvider(it) },
+                            onQuery = { e, q -> openQuery(e, q) },
+                            onAddKey = { screen = "settings" }
                         )
                     }
                 }
@@ -241,7 +252,8 @@ fun App(prefs: SharedPreferences, vm: MainViewModel) {
                         online = it
                         prefs.edit().putBoolean("online", it).apply()
                     },
-                    onClearHistory = { vm.clearHistory() }
+                    onClearHistory = { vm.clearHistory() },
+                    prefs = prefs
                 )
             }
         }
@@ -313,16 +325,8 @@ fun HomeScreen(
             OutlinedButton(onClick = { onInput("") }) { Text(tr("مسح", "Clear")) }
         }
         Button(onClick = { onSearch("quick") }, modifier = Modifier.fillMaxWidth().testTag("btn_quick")) {
-            Text(tr("بحث سريع", "Quick Search"))
+            Text(tr("بحث", "Search"))
         }
-        Button(
-            onClick = { onSearch("deep") }, modifier = Modifier.fillMaxWidth().testTag("btn_deep"),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A3A3A), contentColor = Accent)
-        ) { Text(tr("بحث عميق", "Deep Search")) }
-        Button(
-            onClick = { onSearch("engines") }, modifier = Modifier.fillMaxWidth().testTag("btn_engines"),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A3A3A), contentColor = Accent)
-        ) { Text(tr("كل محركات البحث", "Search All Engines")) }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             TextButton(onClick = { onNav("history") }, modifier = Modifier.testTag("nav_history")) { Text(tr("السجل", "History")) }
@@ -337,6 +341,7 @@ fun StatusChip(s: CardStatus) {
     val c = when (s) {
         CardStatus.SUCCESS -> Color(0xFF66BB6A)
         CardStatus.EXTERNAL -> Accent
+        CardStatus.PAGE_LOADED -> Accent
         CardStatus.READY -> Muted
         CardStatus.NO_RESULTS -> Muted
         CardStatus.UNAVAILABLE -> ErrRed
@@ -386,17 +391,20 @@ fun ProviderCard(p: Provider, url: String, st: CardState, onOpen: () -> Unit) {
                 )
             }
             Text(url, fontSize = 11.sp, color = Muted, maxLines = 2)
+            if (st.detail.isNotEmpty()) {
+                Text(st.detail, fontSize = 11.sp, color = ErrRed)
+            }
             val checked = if (st.checkedAt > 0)
-                tr("آخر فتح: ", "Last opened: ") + fmtTime(st.checkedAt)
+                tr("آخر محاولة: ", "Last attempt: ") + fmtTime(st.checkedAt)
             else if (p.lastChecked.isNotEmpty())
                 tr("فحص القائمة: ", "Registry check: ") + p.lastChecked + " (" + p.lastResult + ")"
             else tr("لم يتم الفحص بعد", "Not checked yet")
             Text(checked, fontSize = 11.sp, color = Muted)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = onOpen, enabled = !dead) {
+                Button(onClick = onOpen, enabled = !dead, modifier = Modifier.testTag("open_" + p.id)) {
                     Text(tr("فتح المصدر", "Open source"))
                 }
-                if (st.status == CardStatus.EXTERNAL || st.status == CardStatus.UNAVAILABLE) {
+                if (st.status != CardStatus.READY) {
                     OutlinedButton(onClick = onOpen, enabled = !dead) {
                         Text(tr("إعادة المحاولة", "Retry"))
                     }
@@ -440,8 +448,9 @@ fun LocalCard(n: Normalized, ms: Long) {
 @Composable
 fun ResultsScreen(
     n: Normalized, mode: String, localMs: Long, reg: Registry.Data,
-    disabled: Set<String>, states: Map<String, CardState>,
-    onMode: (String) -> Unit, onOpen: (Provider) -> Unit
+    disabled: Set<String>, states: Map<String, CardState>, names: NamesResult,
+    onMode: (String) -> Unit, onOpen: (Provider) -> Unit, onQuery: (String, String) -> Unit,
+    onAddKey: () -> Unit
 ) {
     val ctx = LocalContext.current
     val clip = LocalClipboardManager.current
@@ -457,21 +466,25 @@ fun ResultsScreen(
                     }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    FilterChip(selected = mode == "quick", onClick = { onMode("quick") },
+                    FilterChip(selected = mode == "quick", onClick = { onMode("quick") }, modifier = Modifier.testTag("mode_quick"),
                         label = { Text(tr("سريع", "Quick")) })
-                    FilterChip(selected = mode == "deep", onClick = { onMode("deep") },
+                    FilterChip(selected = mode == "deep", onClick = { onMode("deep") }, modifier = Modifier.testTag("mode_deep"),
                         label = { Text(tr("عميق", "Deep")) })
-                    FilterChip(selected = mode == "engines", onClick = { onMode("engines") },
+                    FilterChip(selected = mode == "engines", onClick = { onMode("engines") }, modifier = Modifier.testTag("mode_engines"),
                         label = { Text(tr("كل المحركات", "All engines")) })
                 }
                 Text(
                     tr(
-                        "بطاقة لا تظهر \"نجاح\" إلا إذا جلب التطبيق المعلومة بنفسه. الروابط الخارجية تظهر \"بحث خارجي\" فقط.",
-                        "A card shows SUCCESS only when the app itself retrieved the information. Opened links show EXTERNAL SEARCH only."
+                        "\"نجاح\" يعني أن التطبيق جلب المعلومة بنفسه. الروابط الخارجية تظهر \"بحث خارجي\" فقط.",
+                        "SUCCESS means the app itself retrieved the information. Opened links show EXTERNAL SEARCH only."
                     ),
                     fontSize = 12.sp, color = Muted
                 )
             }
+        }
+        item { NamesSection(names, onAddKey) }
+        items(names.hits, key = { it.url }) { h ->
+            HitCard(h, names.checkedAt) { openUrl(ctx, h.url) }
         }
         item { LocalCard(n, localMs) }
         item {
@@ -483,9 +496,9 @@ fun ResultsScreen(
         items(queries) { q ->
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(q, Modifier.weight(1f), fontSize = 13.sp)
-                TextButton(onClick = { openUrl(ctx, PhoneUtil.searchUrl("google", q)) }) { Text("G") }
-                TextButton(onClick = { openUrl(ctx, PhoneUtil.searchUrl("bing", q)) }) { Text("B") }
-                TextButton(onClick = { openUrl(ctx, PhoneUtil.searchUrl("ddg", q)) }) { Text("D") }
+                TextButton(onClick = { onQuery("google", q) }) { Text("G") }
+                TextButton(onClick = { onQuery("bing", q) }) { Text("B") }
+                TextButton(onClick = { onQuery("ddg", q) }) { Text("D") }
             }
         }
         item {
@@ -597,12 +610,57 @@ fun ProvidersScreen(
 fun SettingsScreen(
     isAr: Boolean, saveHistory: Boolean, online: Boolean,
     onLang: (String) -> Unit, onSaveHistory: (Boolean) -> Unit,
-    onOnline: (Boolean) -> Unit, onClearHistory: () -> Unit
+    onOnline: (Boolean) -> Unit, onClearHistory: () -> Unit, prefs: SharedPreferences
 ) {
+    val ctx = LocalContext.current
+    var provider by remember { mutableStateOf(prefs.getString("api_provider", "serper") ?: "serper") }
+    var keyInput by remember { mutableStateOf("") }
+    var keyMsg by remember { mutableStateOf("") }
+    var hasKey by remember { mutableStateOf(SecureStore.getKey(ctx, provider).isNotEmpty()) }
     Column(
         Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Text(tr("مفتاح البحث (لجلب الأسماء)", "Search key (to get names)"), fontWeight = FontWeight.SemiBold)
+        Text(
+            tr(
+                "الأسماء تظهر فقط إذا أضفت مفتاح واجهة بحث رسمية. Serper.dev يعطي 2500 بحث مجانًا بدون بطاقة. Brave يحتاج بطاقة. المفتاح يُحفظ مشفرًا على جهازك ويُرسل فقط لمزود البحث الذي تختاره.",
+                "Names appear only if you add a key for an official search API. Serper.dev gives 2,500 free searches with no card. Brave needs a card. The key is stored encrypted on this device and is sent only to the provider you pick."
+            ),
+            fontSize = 12.sp, color = Muted
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(selected = provider == "serper", onClick = {
+                provider = "serper"; prefs.edit().putString("api_provider", "serper").apply()
+                hasKey = SecureStore.getKey(ctx, "serper").isNotEmpty(); keyMsg = ""
+            }, label = { Text("Serper.dev") })
+            FilterChip(selected = provider == "brave", onClick = {
+                provider = "brave"; prefs.edit().putString("api_provider", "brave").apply()
+                hasKey = SecureStore.getKey(ctx, "brave").isNotEmpty(); keyMsg = ""
+            }, label = { Text("Brave") })
+        }
+        Text(
+            if (hasKey) tr("مفتاح محفوظ لهذا المزود.", "A key is saved for this provider.")
+            else tr("لا يوجد مفتاح لهذا المزود.", "No key saved for this provider."),
+            fontSize = 12.sp, color = Muted, modifier = Modifier.testTag("key_status")
+        )
+        OutlinedTextField(
+            value = keyInput, onValueChange = { keyInput = it },
+            label = { Text(tr("مفتاح API", "API key")) },
+            singleLine = true, modifier = Modifier.fillMaxWidth().testTag("key_input"),
+            visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation()
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(onClick = {
+                val ok = keyInput.isNotBlank() && SecureStore.setKey(ctx, provider, keyInput)
+                keyMsg = if (ok) tr("تم الحفظ.", "Saved.") else tr("تعذر الحفظ.", "Could not save.")
+                if (ok) { keyInput = ""; hasKey = true }
+            }) { Text(tr("حفظ المفتاح", "Save key")) }
+            OutlinedButton(onClick = {
+                SecureStore.clear(ctx, provider); hasKey = false; keyMsg = tr("تم الحذف.", "Deleted.")
+            }) { Text(tr("حذف المفتاح", "Delete key"), color = ErrRed) }
+        }
+        if (keyMsg.isNotEmpty()) Text(keyMsg, fontSize = 12.sp)
         Text(tr("اللغة", "Language"), fontWeight = FontWeight.SemiBold)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(selected = isAr, onClick = { onLang("ar") }, label = { Text("العربية") })
@@ -622,18 +680,94 @@ fun SettingsScreen(
         Text(tr("الخصوصية", "Privacy"), fontWeight = FontWeight.SemiBold)
         Text(
             tr(
-                "الأرقام التي تبحث عنها تبقى على جهازك (سجل اختياري يمكن حذفه). التطبيق لا يرسل الرقم لأي خادم. عند فتح مصدر خارجي يُرسل الرقم إلى ذلك الموقع عبر المتصفح فقط وتنطبق سياسة خصوصيته. الاتصال الوحيد من التطبيق هو جلب ملف قائمة المصادر من GitHub، ولا يحتوي أي رقم. التطبيق لا يطلب أي صلاحيات غير الإنترنت.",
-                "Numbers you search stay on your device (optional history you can delete). The app sends the number to no server. When you open an external source, the number goes to that website through your browser and its privacy policy applies. The app's only own connection is fetching the provider list file from GitHub, which contains no number. The app asks for no permission other than internet."
+                "الأرقام التي تبحث عنها تبقى على جهازك (سجل اختياري يمكن حذفه). التطبيق لا يرسل الرقم لأي خادم. عند فتح مصدر خارجي يُرسل الرقم إلى ذلك الموقع عبر المتصفح فقط وتنطبق سياسة خصوصيته. إن أضفت مفتاح بحث، يُرسل الرقم إلى مزود البحث الذي اخترته فقط (Serper أو Brave) وتنطبق سياسته. الاتصال الوحيد من التطبيق هو جلب ملف قائمة المصادر من GitHub، ولا يحتوي أي رقم. التطبيق لا يطلب أي صلاحيات غير الإنترنت.",
+                "Numbers you search stay on your device (optional history you can delete). The app sends the number to no server. When you open an external source, the number goes to that website through your browser and its privacy policy applies. If you add a search key, the number is sent to the search provider you chose (Serper or Brave) and its policy applies. The app's only own connection is fetching the provider list file from GitHub, which contains no number. The app asks for no permission other than internet."
             ),
             fontSize = 13.sp
         )
         Text(tr("حدود التطبيق", "Limits"), fontWeight = FontWeight.SemiBold)
         Text(
             tr(
-                "لا يتجاوز التطبيق تسجيل الدخول أو الكابتشا أو حدود الاستخدام، ولا يستخدم بيانات مسربة أو واجهات خاصة. لم يتم التحقق من وجود واجهة بحث عامة لأي مصدر، لذلك كل المصادر تُفتح خارجيًا. لا يؤكد التطبيق أن الرقم مسجل في أي منصة ولا أن اسمًا ما هو اسم المالك.",
-                "The app does not bypass sign-in, CAPTCHAs or rate limits and uses no leaked data or private APIs. No public lookup API was verified for any source, so every source opens externally. The app does not confirm that a number is registered on any platform or that any name is the owner's."
+                "لا يتجاوز التطبيق تسجيل الدخول أو الكابتشا أو حدود الاستخدام، ولا يستخدم بيانات مسربة أو واجهات خاصة. لم يتم التحقق من وجود واجهة بحث عامة لأي مصدر، لذلك الأسماء تأتي فقط من مفتاح بحث تضيفه أنت، وبقية المصادر تُفتح خارجيًا. لا يوجد مصدر مجاني يعطي اسم صاحب رقم مصري عادي. لا يؤكد التطبيق أن الرقم مسجل في أي منصة ولا أن اسمًا ما هو اسم المالك.",
+                "The app does not bypass sign-in, CAPTCHAs or rate limits and uses no leaked data or private APIs. No public lookup API was verified for any source, so names come only from a search key you add yourself, and other sources open externally. No free source gives the owner name of an ordinary Egyptian number. The app does not confirm that a number is registered on any platform or that any name is the owner's."
             ),
             fontSize = 13.sp
         )
+    }
+}
+
+
+@Composable
+fun NamesSection(names: NamesResult, onAddKey: () -> Unit) {
+    Card(
+        Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = Surf)
+    ) {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    tr("أسماء / صفحات تذكر هذا الرقم", "Names / pages mentioning this number"),
+                    fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f)
+                )
+                if (names.state != "idle" && names.state != "loading") StatusChip(names.status)
+            }
+            when (names.state) {
+                "nokey" -> {
+                    Text(
+                        tr(
+                            "لا يوجد مفتاح بحث. أضف مفتاحًا مجانيًا من الإعدادات لجلب الصفحات التي تذكر الرقم. بدونه لن تظهر أسماء.",
+                            "No search key. Add a free key in Settings to fetch pages that mention the number. Without it no names appear."
+                        ),
+                        fontSize = 13.sp, modifier = Modifier.testTag("names_nokey")
+                    )
+                    Button(onClick = onAddKey, modifier = Modifier.testTag("add_key")) {
+                        Text(tr("إضافة مفتاح", "Add key"))
+                    }
+                }
+                "loading" -> Text(tr("جارٍ البحث...", "Searching..."), fontSize = 13.sp)
+                "error" -> Text(names.detail, fontSize = 13.sp, color = ErrRed)
+                "done" -> {
+                    if (names.hits.isEmpty()) {
+                        Text(
+                            tr(
+                                "لم يجد " + names.provider + " صفحات تذكر هذا الرقم. هذا متوقع لمعظم أرقام الأفراد في مصر.",
+                                names.provider + " found no pages that mention this number. This is expected for most personal Egyptian numbers."
+                            ),
+                            fontSize = 13.sp
+                        )
+                    } else {
+                        Text(
+                            tr(
+                                "كل نتيجة أدناه صفحة تذكر الرقم في عنوانها أو مقتطفها. هذا ليس تأكيدًا لهوية صاحب الرقم.",
+                                "Each result below is a page that mentions the number in its title or snippet. This does not verify who owns the number."
+                            ),
+                            fontSize = 12.sp, color = Muted
+                        )
+                    }
+                    if (names.detail.isNotEmpty()) Text(names.detail, fontSize = 12.sp, color = ErrRed)
+                }
+                else -> {}
+            }
+        }
+    }
+}
+
+@Composable
+fun HitCard(h: Hit, checkedAt: Long, onOpen: () -> Unit) {
+    Card(
+        Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("hit_card"),
+        colors = CardDefaults.cardColors(containerColor = Surf)
+    ) {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(h.title, fontWeight = FontWeight.SemiBold)
+            Text(h.snippet, fontSize = 13.sp)
+            Text(
+                tr("مذكور مع هذا الرقم", "Mentioned with this number") + " | " + h.host +
+                    " | " + tr("بحث: ", "query: ") + h.query,
+                fontSize = 11.sp, color = Muted
+            )
+            Text(tr("وقت الفحص: ", "Checked: ") + fmtTime(checkedAt), fontSize = 11.sp, color = Muted)
+            OutlinedButton(onClick = onOpen) { Text(tr("فتح المصدر", "Open source")) }
+        }
     }
 }
