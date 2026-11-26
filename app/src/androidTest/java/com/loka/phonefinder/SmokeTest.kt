@@ -54,6 +54,8 @@ class SmokeTest {
         search("01012345678", "btn_quick")
         rule.waitUntil(5000) { rule.onAllNodesWithTag("localcard").fetchSemanticsNodes().isNotEmpty() }
         rule.onNodeWithTag("intl").assertIsDisplayed()
+        rule.onNodeWithTag("names_nokey").assertIsDisplayed()
+        rule.onNodeWithTag("add_key").assertIsDisplayed()
         shot("02_results_quick")
         rule.onNodeWithTag("results_list").performScrollToNode(hasTestTag("card_whatsapp"))
         rule.onNodeWithTag("card_whatsapp").assertIsDisplayed()
@@ -71,14 +73,16 @@ class SmokeTest {
 
     @Test
     fun d_deepAndEnginesModes() {
-        search("01112345678", "btn_deep")
+        search("01112345678", "btn_quick")
         rule.waitUntil(5000) { rule.onAllNodesWithTag("localcard").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag("mode_deep").performClick()
         rule.onNodeWithTag("results_list").performScrollToNode(hasTestTag("card_nocall"))
         rule.onNodeWithTag("card_nocall").assertIsDisplayed()
         shot("05_deep")
         rule.onNodeWithTag("back").performClick()
-        search("01212345678", "btn_engines")
+        search("01212345678", "btn_quick")
         rule.waitUntil(5000) { rule.onAllNodesWithTag("localcard").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag("mode_engines").performClick()
         rule.onNodeWithTag("results_list").performScrollToNode(hasTestTag("card_brave"))
         rule.onNodeWithTag("card_brave").assertIsDisplayed()
         shot("06_engines")
